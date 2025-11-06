@@ -8,7 +8,6 @@ use App\Models\Company;
 
 class ProductController extends Controller
 {
-    // 商品一覧表示
     public function index()
     {
         $products = Product::with('company')->get();
@@ -16,7 +15,6 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'companies'));
     }
 
-    // 登録フォーム表示
     public function create()
     {
         $companies = Company::all();
@@ -47,20 +45,15 @@ class ProductController extends Controller
     ]);
 
     return redirect('/products')->with('success', '商品を登録しました！');
-     }  // 👈これで store() を閉じます！
+     }  
 
-// ===========================
-// ▼ ここから詳細ページ
-// ===========================
+
 public function show($id)
     {
     $product = Product::with('company')->findOrFail($id);
     return view('products.show', compact('product'));
-     }  // 👈 show() もちゃんと閉じる！
+     } 
 
-// ===========================
-// ▼ ここから編集機能
-// ===========================
 public function edit($id)
     {
     $product = Product::findOrFail($id);
@@ -109,12 +102,10 @@ public function search(Request $request)
 {
     $query = Product::with('company');
 
-    // 商品名で検索
     if ($request->filled('keyword')) {
         $query->where('name', 'like', '%' . $request->keyword . '%');
     }
 
-    // メーカーで検索
     if ($request->filled('company_id')) {
         $query->where('company_id', $request->company_id);
     }
